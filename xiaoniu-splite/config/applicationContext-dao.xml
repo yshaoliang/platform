@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 设置dest dataSource数据源 -->
+	<bean id="targetDataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${target.datasource.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${target.db.jdbc}</value>
+		</property>
+		<property name="user">
+			<value>${target.db.user}</value>
+		</property>
+		<property name="password">
+			<value>${target.db.password}</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>${target.db.initialPoolSize}</value>
+		</property>
+		<property name="minPoolSize">
+			<value>${target.db.minPoolSize}</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>${target.db.maxPoolSize}</value>
+		</property>
+		<property name="testConnectionOnCheckout">
+			<value>true</value>
+		</property>
+	</bean>
+
+	
+	<bean id="targetJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+		abstract="false" lazy-init="false" autowire="default">
+		<property name="dataSource">
+			<ref bean="targetDataSource" />
+		</property>
+	</bean>
+
+	
+	<!-- TEST1-->
+	<bean id="Test1TXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.Test1TXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="easemobTokenTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.EasemobTokenTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="smsSendTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SmsSendTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="processTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.ProcessTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="dwlGoodsTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.DwlGoodsTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="dwlUserTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.DwlUserTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="goodsSupplyTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.GoodsSupplyTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="statisticsTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.StatisticsTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="contractCustomerTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.ContractCustomerTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="eventTXLogDao" class="com.xiaoniu56.splite.gateway.txdao.impl.EventLogTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="businessRecordTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.BusinessRecordTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="mobileNoticeTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.MobileNoticeTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="reportTaskTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.ReportTaskTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="loginkNotifyTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.LoginkNotifyTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<!-- add by laiwenbin -->
+	<bean id="uploadPlatformTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.UploadPlatformTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="uploadAlctTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.UploadAlctTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="eventVideoTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.EventVideoTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="payResultTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.PayResultTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="snapTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+
+	<bean id="snapTwoTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapTwoTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="snapThreeTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapThreeTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="snapFourTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapFourTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="snapFiveTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapFiveTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="snapSixTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapSixTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="snapSevenTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.SnapSevenTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="orderSycnExtTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.OrderSycnExtTxDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	
+	<bean id="minpriceAutoDelegateTxDao" class="com.xiaoniu56.splite.gateway.txdao.impl.MinpriceAutoDelegateTxDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="dictionaryTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.DictionaryTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+	<bean id="PayResultTXDao" class="com.xiaoniu56.splite.gateway.txdao.impl.PayResultTXDaoImpl">
+		<property name="jdbcTemplate" ref="targetJdbcTemplate"></property>
+	</bean>
+</beans>

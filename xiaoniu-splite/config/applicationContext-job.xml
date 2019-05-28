@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+  	 <!-- 设置class -->
+     <bean name="dispatchOverPlanArrivalJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.DispatchOverPlanArrivalJob" />
+        <property name="jobDataAsMap">   
+            <map>
+               <entry key="dispatchOverPlanArrivalTxService" value-ref="dispatchOverPlanArrivalTxService"/>
+               <entry key="dispatchOverPlanDepTxService" value-ref="dispatchOverPlanDepTxService"/>
+               <entry key="orderOverPlanArrivalTxService" value-ref="orderOverPlanArrivalTxService"/>
+            </map>   
+        </property>   
+    </bean>
+    <!-- 设置时间 -->
+    <bean id="dispatchOverPlanArrivalTrigger"  
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="dispatchOverPlanArrivalJob" />  
+        <!-- run every morning at 6 AM -->  
+        <property name="cronExpression" value="0 0/3 * * * ?" />
+    </bean>   
+    
+    
+    <!-- 规费定时器class -->
+     <bean name="feesMobileNoticeJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.FeeMobileNoticeJob" />
+        <property name="jobDataAsMap">   
+            <map>
+               <entry key="feeMobileNoticeService" value-ref="feeMobileNoticeService"/>
+            </map>   
+        </property>   
+    </bean>
+    <!-- 规费定时器设置时间 -->
+    <bean id="FeesMobileNoticeTrigger"  
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="feesMobileNoticeJob" />  
+        <!-- run every morning at 11 AM -->  
+        <property name="cronExpression" value="0 0 23 * * ?" />
+    </bean>
+    
+    
+    <!-- 运营分析报告设置时间 -->
+    <bean id="statisticsJobTrigger"  
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="statisticsJob" />  
+        <!-- run every morning at 11 AM -->  
+        <property name="cronExpression" value="0 0 1 * * ?" />
+    </bean>
+    
+    <!-- 运营分析报告定时器class -->
+     <bean name="statisticsJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.StatisticsJob" />
+        <property name="jobDataAsMap">   
+            <map>
+               <entry key="statisticsTxService" value-ref="statisticsTxService"/>
+            </map>   
+        </property>   
+    </bean>
+    
+    
+    <!-- 设置签约客户class -->
+     <bean name="contractCustomerBatchJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.ContractCustomerBatchJob" />
+        <property name="jobDataAsMap">
+            <map>
+               <entry key="contractCustomerTXDao" value-ref="contractCustomerTXDao"/>
+               <entry key="businessRecordTXDao" value-ref="businessRecordTXDao"/>
+            </map>
+        </property>
+    </bean>
+     <!-- 签约客户设置时间 -->
+    <bean id="contractCustomerBatchTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="contractCustomerBatchJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 10 0 * * ?" /> <!-- 每天凌晨0：10触发 -->
+    </bean>
+    
+    
+     <!-- 费用报告定时任务器设置时间 -->
+    <bean id="creditReportTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="creditReportJob" />
+		<!-- 每天凌晨0：20触发 -->
+        <property name="cronExpression" value="0 20 0 * * ?" />
+    </bean>
+     <!-- 设置签约客户class -->
+    <bean name="creditReportJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.CreditReportJob" />
+    </bean>
+    
+    
+    
+    <!-- 删除30天前的请求 -->
+     <bean name="payRequestJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.PayRequestJob" />
+        <property name="jobDataAsMap">
+            <map>
+               <entry key="payResultTXDao" value-ref="payResultTXDao"/>
+            </map>
+        </property>
+    </bean>
+      <bean id="payRequestTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="payRequestJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 10 0 * * ?" /> <!-- 每天凌晨0：10触发 -->
+    </bean>
+    
+    
+    
+    <!-- 生成对账文件并通知 -->
+    <bean name="settleFileJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SettleFileJob" />
+    </bean>
+     <bean id="settleFileTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="settleFileJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 7 0 * * ?" /> <!-- 每天凌晨0：23触发 -->
+    </bean>
+
+   
+
+    <!-- 删除30天前的请求 -->
+     <bean name="minpriceAutoDelegateJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.MinpriceAutoDelegateJob" />
+        <property name="jobDataAsMap">
+            <map>
+               <entry key="minpriceAutoDelegateTxDao" value-ref="minpriceAutoDelegateTxDao"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="minpriceAutoDelegateTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="minpriceAutoDelegateJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0/5 * * * ?" /> <!-- 每隔五分钟触发 -->
+    </bean>
+    
+
+    <!--广东质量信用上报-->
+    <bean name="gdQualityLoginkJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.GdQualityLoginkJob" />
+    </bean>
+    <!--广东质量上报时间设置-->
+    <bean id="gdQualityLoginkTigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="gdQualityLoginkJob"/>
+        <!--每月一号早上触发-->
+        <property name="cronExpression" value="0 0 9 1 * ?"/>
+    </bean>
+    
+
+    <!--载具道路运输证到期消息提醒-->
+    <bean name="vehicleTransCertAlarmJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.VehicleTransCertAlarmJob" />
+    </bean>
+    <!--载具道路运输证到期消息提醒时间设置-->
+    <bean id="vehicleTransCertAlarmTigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="vehicleTransCertAlarmJob"/>
+        <!--每月一号早上九点触发-->
+        <property name="cronExpression" value="0 0 9 1 * ?"/>
+    </bean>
+
+
+    <!-- 华夏银行每天日切交易 101040 start -->
+    <bean name="huaXiaDayCutJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.HuaXiaDayCutJob" />
+    </bean>
+
+    <bean id="huaxiaDayCutTigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="huaXiaDayCutJob"/>
+    <!-- 每天23点55触发一次 -->
+        <property name="cronExpression" value="0 55 23 ? * *"/>
+    </bean>
+
+
+
+    <!-- 测试id=3024010 照相机调用-->
+    <bean name="snapJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapTXDao" value-ref="snapTXDao"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="snapTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0/30 * * * ?" /> <!-- 每隔30分钟触发 0 0/30 * * * ?-->
+    </bean>
+    
+    <!-- 测试id=3024020 照相机调用-->
+    <bean name="snapTwoJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapTwoJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapTwoTXDao" value-ref="snapTwoTXDao"/>
+
+            </map>
+        </property>
+    </bean>
+    <bean id="snapTwoTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapTwoJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- 每隔1小时触发 0 0 0/1 * * ?-->
+    </bean>
+    
+    <bean name="snapThreeJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapThreeJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapThreeTXDao" value-ref="snapThreeTXDao"/>
+
+            </map>
+        </property>
+    </bean>
+    <bean id="snapThreeTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapThreeJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0/2 * * ?" /> <!-- 每隔2小时触发 0 0 0/2 * * ?-->
+    </bean>
+    
+    <!-- 测试id=3024040 照相机调用-->
+    <bean name="snapFourJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapFourJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapFourTXDao" value-ref="snapFourTXDao"/>
+
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="snapFourTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapFourJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0/3 * * ?" /> <!-- 每隔3小时触发 0 0 0/3 * * ?-->
+    </bean>
+    <!-- 测试id=3024040 照相机调用-->
+    <bean name="snapFiveJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapFiveJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapFiveTXDao" value-ref="snapFiveTXDao"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="snapFiveTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapFiveJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0/4 * * ?" /> <!-- 每隔4小时触发 0 0 0/4 * * ?-->
+    </bean>
+    
+    <!-- 测试id=3024050 照相机调用-->
+    <bean name="snapSixJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapSixJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapSixTXDao" value-ref="snapSixTXDao"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="snapSixTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapSixJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0/5 * * ?" /> <!-- 每隔5小时触发 0 0 0/5 * * ?-->
+    </bean>
+
+    <!-- 测试id=3024070 照相机调用-->
+    <bean name="snapSevenJob"  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.xiaoniu56.splite.gateway.jobs.SnapSevenJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="SnapSevenTXDao" value-ref="snapSevenTXDao"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="snapSevenTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="snapSevenJob" />
+        <!-- run every morning at 6 AM -->
+        <property name="cronExpression" value="0 0 0 * * ?" /> <!-- 每天触发1次-->
+    </bean>
+   
+
+
+
+
+
+    <!-- 总调度用于启动Spring定时器 -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="dispatchOverPlanArrivalTrigger" />
+                <ref bean="FeesMobileNoticeTrigger" />
+                <ref bean="statisticsJobTrigger" />
+                <ref bean="creditReportTrigger" />
+                <ref bean="minpriceAutoDelegateTrigger" />
+                <ref bean="contractCustomerBatchTrigger" />
+                <ref bean="settleFileTrigger" />
+                <ref bean="payRequestTrigger" />
+                <ref bean="gdQualityLoginkTigger"/>
+                <ref bean="vehicleTransCertAlarmTigger"/>
+                
+                <ref bean="huaxiaDayCutTigger"/>
+                <ref bean="snapTrigger"/>
+                <ref bean="snapTwoTrigger"/>
+                <ref bean="snapThreeTrigger"/>
+                <ref bean="snapFourTrigger"/>
+                <ref bean="snapFiveTrigger"/>
+                <ref bean="snapSixTrigger"/>
+                <ref bean="snapSevenTrigger"/>
+            </list>
+        </property>
+    </bean>
+   
+</beans>

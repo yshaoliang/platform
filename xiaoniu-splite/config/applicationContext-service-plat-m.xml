@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+	<!-- 物流平台配置 -->
+	<!--
+	<bean id="xiangbdLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${xbd.password}"/>
+		<property name="senderCode" value="${xbd.senderCode}"/>
+		<property name="recipientCode" value="${xbd.receiptCode}"/>
+		<property name="resourceID" value="${xbd.resourceID}"/>
+	</bean>
+	
+	<bean id="xndyLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${xndy.password}"/>
+		<property name="senderCode" value="${xndy.senderCode}"/>
+		<property name="recipientCode" value="${xndy.receiptCode}"/>
+		<property name="resourceID" value="${xndy.resourceID}"/>
+	</bean>
+	
+	<bean id="huohuitongLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${huohuitong.password}"/>
+		<property name="senderCode" value="${huohuitong.senderCode}"/>
+		<property name="recipientCode" value="${huohuitong.receiptCode}"/>
+		<property name="resourceID" value="${huohuitong.resourceID}"/>
+	</bean>
+	<bean id="xfsjLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${xfsj.password}"/>
+		<property name="senderCode" value="${xfsj.senderCode}"/>
+		<property name="recipientCode" value="${xfsj.receiptCode}"/>
+		<property name="resourceID" value="${xfsj.resourceID}"/>
+	</bean>
+	<bean id="zhwlLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${zhwl.password}"/>
+		<property name="senderCode" value="${zhwl.senderCode}"/>
+		<property name="recipientCode" value="${zhwl.receiptCode}"/>
+		<property name="resourceID" value="${zhwl.resourceID}"/>
+	</bean>
+	<bean id="huoyunyuanLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${huoyunyuan.password}"/>
+		<property name="senderCode" value="${huoyunyuan.senderCode}"/>
+		<property name="recipientCode" value="${huoyunyuan.receiptCode}"/>
+		<property name="resourceID" value="${huoyunyuan.resourceID}"/>
+	</bean>
+	
+	<bean id="llsLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${lls.password}"/>
+		<property name="senderCode" value="${lls.senderCode}"/>
+		<property name="recipientCode" value="${lls.receiptCode}"/>
+		<property name="resourceID" value="${lls.resourceID}"/>
+	</bean>
+	<bean id="zywlLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${zywl.password}"/>
+		<property name="senderCode" value="${zywl.senderCode}"/>
+		<property name="recipientCode" value="${zywl.receiptCode}"/>
+		<property name="resourceID" value="${zywl.resourceID}"/>
+	</bean>
+	<bean id="klyuntongLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${klyuntong.password}"/>
+		<property name="senderCode" value="${klyuntong.senderCode}"/>
+		<property name="recipientCode" value="${klyuntong.receiptCode}"/>
+		<property name="resourceID" value="${klyuntong.resourceID}"/>
+	</bean>
+	<bean id="hnsbLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${hnsb.password}"/>
+		<property name="senderCode" value="${hnsb.senderCode}"/>
+		<property name="recipientCode" value="${hnsb.receiptCode}"/>
+		<property name="resourceID" value="${hnsb.resourceID}"/>
+	</bean>
+	
+	<bean id="ytwlLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${ytwl.password}"/>
+		<property name="senderCode" value="${ytwl.senderCode}"/>
+		<property name="recipientCode" value="${ytwl.receiptCode}"/>
+		<property name="resourceID" value="${ytwl.resourceID}"/>
+	</bean>
+	
+	<bean id="hlwlLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${hlwl.password}"/>
+		<property name="senderCode" value="${hlwl.senderCode}"/>
+		<property name="recipientCode" value="${hlwl.receiptCode}"/>
+		<property name="resourceID" value="${hlwl.resourceID}"/>
+	</bean>
+
+	<bean id="gltdLogink" class="com.xiaoniu56.splite.gateway.model.LoginkNotifyConfig">
+		<property name="password" value="${gltd.password}"/>
+		<property name="senderCode" value="${gltd.senderCode}"/>
+		<property name="recipientCode" value="${gltd.receiptCode}"/>
+		<property name="resourceID" value="${gltd.resourceID}"/>
+	</bean>
+	-->
+	<!-- demo -->
+
+	<bean id="loginkNotifyTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.LoginkNotifyTxServiceImpl" init-method="init">
+		<property name="loginkNotifyTXDao" ref="loginkNotifyTXDao"/>
+		<property name="dictionaryTXDao" ref="dictionaryTXDao"/>
+		<!--
+		<property name="authURL" value="${loginkPlat.authURL}"/>
+		<property name="targetURL" value="${loginkPlat.targetURL}"/>
+		<property name="heBeiTargetURL" value="${loginkPlat.heBeiTargetURL}"/>
+		<property name="guangDongTargetURL" value="${loginkPlat.guangDongTargetURL}"/>
+		<property name="mengGuTargetURL" value="${loginkPlat.mengGuTargetURL}"/>
+		<property name="tianjinTargetURL" value="${loginkPlat.tianjingTargetURL}"/>
+		
+		<property name="mengGuAuthenticationURL" value="${loginkPlat.mengGuAuthenticationURL}"/>
+		<property name="mengGuRefreshTokenUrl" value="${loginkPlat.mengGuRefreshTokenUrl}"/>
+		-->
+		<!-- 
+		<property name="notifyConfigMap">
+			<map>
+            	<entry key="xiangbd" value-ref="xiangbdLogink"></entry>
+            	<entry key="xndy" value-ref="xndyLogink"></entry>
+            	<entry key="huohuitong" value-ref="huohuitongLogink"></entry>
+            	<entry key="xfsj" value-ref="xfsjLogink"></entry>
+            	<entry key="zhwl" value-ref="zhwlLogink"></entry>
+            	<entry key="huoyunyuan" value-ref="huoyunyuanLogink"></entry>
+            	<entry key="lls" value-ref="llsLogink"></entry>
+            	<entry key="zywl" value-ref="zywlLogink"></entry>
+            	<entry key="klyuntong" value-ref="klyuntongLogink"></entry>
+            	<entry key="hnsb" value-ref="hnsbLogink"></entry>
+            	<entry key="ytwl" value-ref="ytwlLogink"></entry>
+            	<entry key="hlwl" value-ref="hlwlLogink"></entry>
+				<entry key="gltd" value-ref="gltdLogink"></entry>
+			</map>
+		</property>
+		-->
+	</bean>
+	
+
+	<bean id="loginkPlatNotifyBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${loginkPlatNotify.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${loginkPlatNotify.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="loginkNotifyTxService"></property>
+				<property name="busiSleepTime" value="${loginkPlatNotify.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${loginkPlatNotify.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean id="uploadPlatformTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.UploadPlatformTxServiceImpl" init-method="init">
+		<property name="uploadPlatformTXDao" ref="uploadPlatformTXDao"/>
+		<property name="dictionaryTXDao" ref="dictionaryTXDao"/>
+		<!--
+		<property name="authURL" value="${loginkPlat.authURL}"/>
+		<property name="targetURL" value="${loginkPlat.targetURL}"/>
+		<property name="heBeiTargetURL" value="${loginkPlat.heBeiTargetURL}"/>
+		<property name="guangDongTargetURL" value="${loginkPlat.guangDongTargetURL}"/>
+		<property name="mengGuTargetURL" value="${loginkPlat.mengGuTargetURL}"/>
+		<property name="mengGuAuthenticationURL" value="${loginkPlat.mengGuAuthenticationURL}"/>
+		<property name="mengGuRefreshTokenUrl" value="${loginkPlat.mengGuRefreshTokenUrl}"/>
+		  -->
+		<!-- 
+		<property name="notifyConfigMap">
+			<map>
+            	<entry key="xiangbd" value-ref="xiangbdLogink"></entry>
+            	<entry key="xndy" value-ref="xndyLogink"></entry>
+            	<entry key="huohuitong" value-ref="huohuitongLogink"></entry>
+            	<entry key="xfsj" value-ref="xfsjLogink"></entry>
+            	<entry key="zhwl" value-ref="zhwlLogink"></entry>
+            	<entry key="huoyunyuan" value-ref="huoyunyuanLogink"></entry>
+            	<entry key="lls" value-ref="llsLogink"></entry>
+            	<entry key="zywl" value-ref="zywlLogink"></entry>
+            	<entry key="klyuntong" value-ref="klyuntongLogink"></entry>
+            	<entry key="hnsb" value-ref="hnsbLogink"></entry>
+            	<entry key="ytwl" value-ref="ytwlLogink"></entry>
+            	<entry key="hlwl" value-ref="hlwlLogink"></entry>
+				<entry key="gltd" value-ref="gltdLogink"></entry>
+			</map>
+		</property> -->
+	</bean>
+	<bean id="UploadParternTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.UploadParternTxServiceImpl" init-method="init">
+		<property name="uploadPlatformTXDao" ref="uploadPlatformTXDao"/>
+		<property name="dictionaryTXDao" ref="dictionaryTXDao"/>
+	</bean>
+	
+	<bean id="uploadPlatformBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${uploadPlatformParam.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${uploadPlatformParam.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="uploadPlatformTxService"></property>
+				<property name="busiSleepTime" value="${uploadPlatformParam.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${uploadPlatformParam.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="uploadpartnerBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${uploadpartnerParam.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${uploadpartnerParam.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="UploadParternTxService"></property>
+				<property name="busiSleepTime" value="${uploadpartnerParam.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${uploadpartnerParam.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

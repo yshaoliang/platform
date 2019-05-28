@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<bean id="smsSendTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.SmsSendTxServiceImpl" parent="easemobTokenTxService">
+		<property name="queryMaxSize">
+			<value>${smsSend.maxquerysize}</value>
+		</property>
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>	
+	</bean>
+	
+	<bean id="smsSendHisTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.SmsSendHisTxServiceImpl">
+		<property name="queryMaxSize">
+			<value>${smsSendHis.maxquerysize}</value>
+		</property>
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>
+	</bean>
+	
+	<bean id="smsSendPushMsgTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.SmsSendPushMsgTxServiceImpl" parent="easemobTokenTxService">
+		<property name="queryMaxSize">
+			<value>${smsSendPushMsg.maxquerysize}</value>
+		</property>
+		<property name="pushMethod">
+			<value>${smsSendPushMsg.pushMethod}</value>
+		</property>
+		
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>
+	</bean>
+	
+	<bean id="easemobTokenTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.EasemobTokenTxServiceImpl" >
+		<property name="easemobTokenTXDao" ref="easemobTokenTXDao"/>
+	</bean>
+	
+	
+	<bean id="smsSendBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${smsSend.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${smsSend.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="smsSendTxService"></property>
+				<property name="busiSleepTime" value="${smsSend.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${smsSend.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="smsSendHisBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${smsSendHis.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${smsSendHis.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="smsSendHisTxService"></property>
+				<property name="busiSleepTime" value="${smsSendHis.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${smsSendHis.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="smsSendPushMsgBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${smsSendPushMsg.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${smsSendPushMsg.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="smsSendPushMsgTxService"></property>
+				<property name="busiSleepTime" value="${smsSendPushMsg.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${smsSendPushMsg.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+
+	
+</beans>

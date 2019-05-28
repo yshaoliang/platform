@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<bean id="statisticsTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.StatisticsTxServiceImpl">
+		<!-- <property name="run_time">
+			<value>${STATISTICS_RUN_PRO_MINUTE_TIME}</value>
+		</property> -->
+		<property name="statisticsTXDao" ref="statisticsTXDao"/>
+	</bean>
+	
+	<bean id="dispatchOverPlanArrivalTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.DispatchOverPlanArrivalTxServiceImpl">
+		<property name="eventTXLogDao" ref="eventTXLogDao"/>
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>
+	</bean>
+	
+	<bean id="dispatchOverPlanDepTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.DispatchOverPlanDepTxServiceImpl">
+		<property name="eventTXLogDao" ref="eventTXLogDao"/>
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>
+	</bean>
+	
+	<bean id="orderOverPlanArrivalTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.OrderOverPlanArrivalTxServiceImpl">
+		<property name="eventTXLogDao" ref="eventTXLogDao"/>
+		<property name="smsSendTXDao" ref="smsSendTXDao"/>
+	</bean>
+	
+	<bean id="feeMobileNoticeService" class="com.xiaoniu56.splite.gateway.txservice.impl.FeeMobileNoticeServiceImpl">
+		<property name="mobileNoticeTXDao" ref="mobileNoticeTXDao"/>
+	</bean>
+
+<!--	<bean id="snapTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.SnapTxServiceImpl">
+		<property name="snapTXDao" ref="snapTXDao"/>
+	</bean>-->
+		
+</beans>

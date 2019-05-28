@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+	<!--江苏省物流平台配置 -->
+	
+	
+	<bean id="orderSycnExtTxService" class="com.xiaoniu56.splite.gateway.txservice.impl.OrderSycnExtServiceImpl" init-method="init" >
+		<property name="queryMaxSize">
+			<value>${xpg.jscfp.maxquerysize}</value>
+		</property>
+		<!--
+		<property name="xpgJspfgUrl"><value>${xpg.jscfp.url}</value></property>
+		<property name="xpgJspfgUrl2"><value>${xpg.jscfp.url2}</value></property>
+		 -->
+		<property name="orderSycnExtTXDao" ref="orderSycnExtTXDao"/>
+		<property name="dictionaryTXDao" ref="dictionaryTXDao"/>
+	</bean>
+
+	
+
+	 
+	<bean id="orderSycnExtBaseCommand" class="com.xiaoniu56.splite.gateway.action.impl.BaseCommand"
+		destroy-method="stop">
+		<property name="commandName">
+			<value>${xpg.jscfp.module.name}</value>
+		</property>
+		<property name="handler">
+			<bean class="com.xiaoniu56.splite.gateway.threads.BaseHandler">
+				<constructor-arg name="maxNum" value="${xpg.jscfp.threadpoolnum}"></constructor-arg>
+				<property name="service" ref="orderSycnExtTxService"></property>
+				<property name="busiSleepTime" value="${xpg.jscfp.busisleeptime}"></property>
+				<property name="heartBeatTime" value="${xpg.jscfp.heartbeattime}"></property>
+			</bean>
+		</property>
+	</bean>
+
+
+
+	
+</beans>

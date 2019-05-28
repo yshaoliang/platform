@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<bean id="jtaTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		<property name="dataSource" ref="targetDataSource"></property>
+	</bean>
+	
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* com.xiaoniu56.splite.gateway.txservice.*Service.*(..))"
+			id="txOperation" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txOperation" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="jtaTxManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="commit*" rollback-for="Exception" />
+			<tx:method name="update*" rollback-for="Exception" />
+			<tx:method name="exec*"   rollback-for="Exception" />
+			<tx:method name="execute*"   rollback-for="Exception" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<import resource="applicationContext-service-common.xml" />
+	<import resource="applicationContext-service-basic.xml" />
+	<import resource="applicationContext-service-sms.xml" />
+	<import resource="applicationContext-service-pay.xml" />
+	<!-- 
+	<import resource="applicationContext-service-event.xml" /> -->
+	<import resource="applicationContext-service-plat-p.xml" />
+	<import resource="applicationContext-service-plat-m.xml" />
+	<import resource="applicationContext-service-vip.xml" />
+	<import resource="applicationContext-service-process.xml" />
+	
+	<import resource="applicationContext-service-alct.xml" />
+
+	<bean id="commandBeans" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="goodsSupplyBaseCommand" />
+				<ref bean="creditReportBaseCommand" />
+				<ref bean="smsSendBaseCommand" />
+				<ref bean="smsSendHisBaseCommand" />
+				<ref bean="smsSendPushMsgBaseCommand" />
+				<ref bean="payResultBaseCommand" />
+				<ref bean="eventResultBaseCommand" />
+				<ref bean="loginkPlatNotifyBaseCommand" />
+				<ref bean="uploadPlatformBaseCommand" />
+				<ref bean="orderSycnExtBaseCommand"/>
+				<ref bean="contractCustomerBaseCommand" />
+				<ref bean="batchImportBaseCommand" />
+				<ref bean="uploadpartnerBaseCommand" />
+				<ref bean="uploadAlctBaseCommand" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+</beans>
