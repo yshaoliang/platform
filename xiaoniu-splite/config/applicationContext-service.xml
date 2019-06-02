@@ -61,7 +61,7 @@
 				<ref bean="smsSendHisBaseCommand" />
 				<ref bean="smsSendPushMsgBaseCommand" />
 				<ref bean="payResultBaseCommand" />
-				<ref bean="eventResultBaseCommand" />
+
 				<ref bean="loginkPlatNotifyBaseCommand" />
 				<ref bean="uploadPlatformBaseCommand" />
 				<ref bean="orderSycnExtBaseCommand"/>
